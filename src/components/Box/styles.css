@@ -1,0 +1,19 @@
+.container-box {
+    display: flex;
+    flex-direction: column;
+    max-width: 933px;
+    height: 312px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.container-box .logo {
+    width: 200px;
+    margin-bottom: 50px;
+}
+
+.container-box .logo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
