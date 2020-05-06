@@ -9,11 +9,18 @@
 
 .container-box .logo {
     width: 200px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .container-box .logo img {
     width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+.container-box form {
+    background: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0px 3px 10px #ccc;
 }

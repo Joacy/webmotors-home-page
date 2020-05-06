@@ -20,6 +20,8 @@ export default function Box () {
     const [vehicle, setVehicle] = useState('');
     const [model, setModel] = useState('');
     const [version, setVersion] = useState('');
+    const [year, setYear] = useState('');
+    const [price, setPrice] = useState('');
 
     async function getMakes () {
         try {
@@ -115,10 +117,10 @@ export default function Box () {
                     <select>
                         <option value="" selected>Todas</option>
                         <option
-                            value={make}
-                            onChange={e => setMake(e.target.value)}
+                            value={year}
+                            onChange={e => setYear(e.target.value)}
                         >
-                            {make}
+                            {year}
                         </option>
                     </select>
 
@@ -126,10 +128,10 @@ export default function Box () {
                     <select>
                         <option value="" selected>Todos</option>
                         <option
-                            value={model}
-                            onChange={e => setModel(e.target.value)}
+                            value={price}
+                            onChange={e => setPrice(e.target.value)}
                         >
-                            {model}
+                            {price}
                         </option>
                     </select>
 
