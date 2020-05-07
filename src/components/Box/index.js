@@ -63,7 +63,7 @@ export default class Box extends Component {
         }
     };
 
-    getVersions = async (modelID = 1) => {
+    async getVersions (modelID = 1) {
         try {
             const response = await api.get(`Version?ModelID=${modelID}`);
 
