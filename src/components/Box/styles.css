@@ -24,3 +24,32 @@
     border-radius: 4px;
     box-shadow: 0px 3px 10px #ccc;
 }
+
+.container-box form input,
+.container-box form select option {
+    color: #222;
+}
+
+.container-box form input[type="checkbox"] {
+    display: none;
+}
+
+.container-box form label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 25px;
+}
+
+.container-box form label span {
+    width: 14px;
+    height: 14px;
+    background: transparent;
+    border-radius: 50%;
+    border: 1px solid #222;
+    margin-right: 5px;
+}
+
+.container-box form label[data-state="true"] span {
+    background: #ec0928;
+}
