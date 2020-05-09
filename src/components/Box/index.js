@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import api from '../../services/api';
 
@@ -17,9 +17,14 @@ export default function Box () {
     const [versions, setVersions] = useState([]);
 
     const [makeID, setMakeID] = useState(0);
+    const [makeName, setMakeName] = useState('');
+
     const [modelID, setModelID] = useState(1);
+    const [modelName, setModelName] = useState('');
+
     const [vehicleID, setVehicleID] = useState(1);
-    const [versionID, setVersionID] = useState(1);
+
+    const [versionName, setVersionName] = useState('');
 
     const [year, setYear] = useState(0);
     const [years, setYears] = useState([
@@ -66,37 +71,42 @@ export default function Box () {
             // console.log(response.data);
 
             setMakes(response.data);
+
         } catch (error) {
             alert('Erro ao extrair os dados');
         }
     };
 
     async function getModels (makeID) {
-        try {
-            const response = await api.get(`Model?MakeID=${makeID}`);
+        if (makeID !== 0) {
+            try {
+                const response = await api.get(`Model?MakeID=${makeID}`);
 
-            // console.log(response.data);
+                // console.log(response.data);
 
-            setModels(response.data);
+                setModels(response.data);
 
-            console.log(models);
+                console.log(models);
 
-        } catch (error) {
-            alert('Erro ao extrair os dados');
+            } catch (error) {
+                alert('Erro ao extrair os dados');
+            }
         }
     };
 
     async function getVersions (modelID) {
-        try {
-            const response = await api.get(`Version?ModelID=${modelID}`);
+        if (modelID !== 0) {
+            try {
+                const response = await api.get(`Version?ModelID=${modelID}`);
 
-            // console.log(response.data);
+                // console.log(response.data);
 
-            setVersions(response.data);
+                setVersions(response.data);
 
-            console.log(versions);
-        } catch (error) {
-            alert('Erro ao extrair os dados');
+                console.log(versions);
+            } catch (error) {
+                alert('Erro ao extrair os dados');
+            }
         }
     };
 
@@ -129,46 +139,15 @@ export default function Box () {
         setPrice(price);
     }
 
-    // async function getYear (year) {
-    //     setYear(year);
-    // }
-
     window.onload = () => {
         getMakes();
         getVehicles();
+        setYear(0);
+        setPrice(0);
+        setMakeName('todos');
+        setModelName('todos');
+        setVersionName('todos');
     }
-
-    useEffect(() => {
-        console.log(year)
-    }, [year])
-
-    // async function handleGalery (e) {
-    //     e.preventDefault();
-
-    //     if (newCar && !usedCar) {
-    //         setVehicles(vehicles.filter(vehicle => {
-    //             return vehicle.KM === 0
-    //         }));
-    //     }
-    //     else if (!newCar && usedCar) {
-    //         setVehicles(vehicles.filter(vehicle => {
-    //             return vehicle.KM !== 0
-    //         }));
-    //     }
-
-    //     console.log(newCar);
-    //     console.log(usedCar);
-    //     console.log(makes);
-    //     console.log(vehicles);
-    //     console.log(models);
-    //     console.log(versions);
-    //     console.log(makeID);
-    //     console.log(vehicleID);
-    //     console.log(modelID);
-    //     console.log(versionID);
-    //     console.log(year);
-    //     console.log(price);
-    // };
 
     return (
         <>
@@ -220,9 +199,10 @@ export default function Box () {
                             e => {
                                 setMakeID(e.target.value)
                                 getModels(e.target.value)
+                                setMakeName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
-                            <option value="" selected>Todas</option>
+                            <option value={0} selected>Todas</option>
                             {makes.map(make => (
                                 <option key={make.ID}
                                     value={make.ID}
@@ -239,9 +219,10 @@ export default function Box () {
                             e => {
                                 setModelID(e.target.value)
                                 getVersions(e.target.value)
+                                setModelName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
-                            <option value="" selected>Todos</option>
+                            <option value={0} selected>Todos</option>
                             {models.map(model => (
                                 <option key={model.ID}
                                     value={model.ID}
@@ -254,11 +235,15 @@ export default function Box () {
 
                     <div className="input-row">
                         <span>Versão:</span>
-                        <select>
-                            <option value="" selected>Todas</option>
+                        <select onChange={
+                            e => {
+                                setVersionName(e.target.value)
+                            }
+                        }>
+                            <option value="todos" selected>Todas</option>
                             {versions.map(version => (
                                 <option key={version.ID}
-                                    value={version.ID}
+                                    value={version.Name}
                                 >
                                     {version.Name}
                                 </option>
@@ -343,9 +328,10 @@ export default function Box () {
                             e => {
                                 setMakeID(e.target.value)
                                 getModels(e.target.value)
+                                setMakeName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
-                            <option value="" selected>Todas</option>
+                            <option value={0} selected>Todas</option>
                             {makes.map(make => (
                                 <option key={make.ID}
                                     value={make.ID}
@@ -360,9 +346,10 @@ export default function Box () {
                             e => {
                                 setModelID(e.target.value)
                                 getVersions(e.target.value)
+                                setModelName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
-                            <option value="" selected>Todos</option>
+                            <option value={0} selected>Todos</option>
                             {models.map(model => (
                                 <option key={model.ID}
                                     value={model.ID}
@@ -375,11 +362,15 @@ export default function Box () {
 
                     <div className="input-row">
                         <span>Versão:</span>
-                        <select>
-                            <option value="" selected>Todas</option>
+                        <select onChange={
+                            e => {
+                                setVersionName(e.target.value)
+                            }
+                        }>
+                            <option value="todos" selected>Todas</option>
                             {versions.map(version => (
                                 <option key={version.ID}
-                                    value={version.ID}
+                                    value={version.Name}
                                 >
                                     {version.Name}
                                 </option>
@@ -420,7 +411,6 @@ export default function Box () {
                         </select>
                     </div>
 
-                    {/* <button type="submit">Ver ofertas</button> */}
                 </form>
             </div>
 
@@ -432,16 +422,16 @@ export default function Box () {
                             &&
                             (!newCar && usedCar ? vehicle.KM !== 0 : vehicle.KM === 0)
                         ))
-                        // &&
-                        // filtro por marca
-                        // &&
-                        // filtro por modelo
+                        &&
+                        (makeName === 'todos' ? vehicle.Make !== 'todos' : vehicle.Make === makeName)
+                        &&
+                        (modelName === 'todos' ? vehicle.Model !== 'todos' : vehicle.Model === modelName)
                         &&
                         (parseInt(year) === 0 ? vehicle.YearModel !== 0 : vehicle.YearModel === parseInt(year))
                         &&
                         (parseInt(price) === 0 ? vehicle.Price !== 0 : vehicle.Price <= price)
-                        // &&
-                        // filtro por versão
+                        &&
+                        (versionName === 'todos' ? vehicle.Version !== 'todos' : vehicle.Version === versionName)
                         &&
                         (
                             <div className="item" key={vehicle.ID}>
