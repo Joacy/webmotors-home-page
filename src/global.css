@@ -19,4 +19,13 @@ body {
     display: flex;
     align-items: center;
     flex: 1;
+    flex-wrap: wrap;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    flex-wrap: wrap;
 }

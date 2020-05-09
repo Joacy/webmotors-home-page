@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import api from '../../services/api';
 
@@ -8,22 +8,52 @@ import './styles.css';
 
 export default function Box () {
 
-    const [newCar, setNewCar] = useState(false);
-    const [usedCar, setUsedCar] = useState(false);
+    const [newCar, setNewCar] = useState(true);
+    const [usedCar, setUsedCar] = useState(true);
 
     const [makes, setMakes] = useState([]);
     const [vehicles, setVehicles] = useState([]);
     const [models, setModels] = useState([]);
     const [versions, setVersions] = useState([]);
 
-    const [makeID, setMakeID] = useState(1);
+    const [makeID, setMakeID] = useState(0);
     const [modelID, setModelID] = useState(1);
     const [vehicleID, setVehicleID] = useState(1);
     const [versionID, setVersionID] = useState(1);
 
-    const [year, setYear] = useState(1);
+    const [year, setYear] = useState(0);
+    const [years, setYears] = useState([
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009,
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020
+    ]);
 
-    const [price, setPrice] = useState([1, 1]);
+    const [price, setPrice] = useState(0);
+    const [prices, setPrices] = useState([
+        19999,
+        39999,
+        59999,
+        79999,
+        99999
+    ]);
 
     let page;
 
@@ -36,22 +66,21 @@ export default function Box () {
             // console.log(response.data);
 
             setMakes(response.data);
-
         } catch (error) {
             alert('Erro ao extrair os dados');
         }
     };
 
-
-    async function getModels (makeID = 1) {
+    async function getModels (makeID) {
         try {
             const response = await api.get(`Model?MakeID=${makeID}`);
 
             // console.log(response.data);
 
-            setModels([...models, ...response.data]);
+            setModels(response.data);
 
-            // console.log(models);
+            console.log(models);
+
         } catch (error) {
             alert('Erro ao extrair os dados');
         }
@@ -61,11 +90,11 @@ export default function Box () {
         try {
             const response = await api.get(`Version?ModelID=${modelID}`);
 
-            console.log(response.data);
+            // console.log(response.data);
 
-            setVersions([...versions, ...response.data]);
+            setVersions(response.data);
 
-            // console.log(versions);
+            console.log(versions);
         } catch (error) {
             alert('Erro ao extrair os dados');
         }
@@ -96,38 +125,50 @@ export default function Box () {
         setVehicles(vehiclesArray);
     };
 
+    async function getPrice (price) {
+        setPrice(price);
+    }
+
+    // async function getYear (year) {
+    //     setYear(year);
+    // }
+
     window.onload = () => {
         getMakes();
         getVehicles();
     }
 
-    async function handleGalery (e) {
-        e.preventDefault();
+    useEffect(() => {
+        console.log(year)
+    }, [year])
 
-        if (newCar && !usedCar) {
-            setVehicles(vehicles.filter(vehicle => {
-                return vehicle.KM === 0
-            }));
-        }
-        else if (!newCar && usedCar) {
-            setVehicles(vehicles.filter(vehicle => {
-                return vehicle.KM !== 0
-            }));
-        }
+    // async function handleGalery (e) {
+    //     e.preventDefault();
 
-        console.log(newCar);
-        console.log(usedCar);
-        console.log(makes);
-        console.log(vehicles);
-        console.log(models);
-        console.log(versions);
-        console.log(makeID);
-        console.log(vehicleID);
-        console.log(modelID);
-        console.log(versionID);
-        console.log(year);
-        console.log(price);
-    };
+    //     if (newCar && !usedCar) {
+    //         setVehicles(vehicles.filter(vehicle => {
+    //             return vehicle.KM === 0
+    //         }));
+    //     }
+    //     else if (!newCar && usedCar) {
+    //         setVehicles(vehicles.filter(vehicle => {
+    //             return vehicle.KM !== 0
+    //         }));
+    //     }
+
+    //     console.log(newCar);
+    //     console.log(usedCar);
+    //     console.log(makes);
+    //     console.log(vehicles);
+    //     console.log(models);
+    //     console.log(versions);
+    //     console.log(makeID);
+    //     console.log(vehicleID);
+    //     console.log(modelID);
+    //     console.log(versionID);
+    //     console.log(year);
+    //     console.log(price);
+    // };
 
     return (
         <>
@@ -136,8 +177,8 @@ export default function Box () {
                     <img src={logo} alt="" />
                 </div>
 
-                <form onSubmit={handleGalery}>
-                    <div className="flex-row">
+                <form className="mobile">
+                    <div className="input-row one-hundred">
                         <input
                             type="checkbox"
                             name="newCar"
@@ -157,39 +198,53 @@ export default function Box () {
                         <label for="usedCar" data-state={usedCar}><span></span> Usados</label>
                     </div>
 
-                    <div className="flex-row">
-                        Onde:
-                    <input
+                    <div className="input-row">
+                        <span>Onde:</span>
+                        <input
                             type="text"
                             value="São Paulo - SP"
                         />
+                    </div>
 
-                    Raio:
-                    <select>
+                    <div className="input-row">
+                        <span>Raio:</span>
+                        <select>
                             <option value="" selected disabled>Km</option>
                             <option value="">100Km</option>
                         </select>
+                    </div>
 
-                    Marca:
-                    <select>
+                    <div className="input-row">
+                        <span>Marca:</span>
+                        <select onChange={
+                            e => {
+                                setMakeID(e.target.value)
+                                getModels(e.target.value)
+                            }
+                        }>
                             <option value="" selected>Todas</option>
                             {makes.map(make => (
                                 <option key={make.ID}
                                     value={make.ID}
-                                    onChange={e => setMakeID(e.target.value)}
                                 >
                                     {make.Name}
                                 </option>
                             ))}
                         </select>
+                    </div>
 
-                    Modelo:
-                    <select>
+                    <div className="input-row">
+                        <span>Modelo:</span>
+                        <select onChange={
+                            e => {
+                                setModelID(e.target.value)
+                                getVersions(e.target.value)
+                            }
+                        }>
                             <option value="" selected>Todos</option>
-                            {models.map((model, index) => (index !== 0) && (
+                            {models.map(model => (
                                 <option key={model.ID}
-                                    value={modelID}
-                                    onChange={e => setModelID(e.target.value)}
+                                    value={model.ID}
                                 >
                                     {model.Name}
                                 </option>
@@ -197,42 +252,175 @@ export default function Box () {
                         </select>
                     </div>
 
-                    <div className="flex-row">
-                        Ano Desejado:
-                    <select>
+                    <div className="input-row">
+                        <span>Versão:</span>
+                        <select>
                             <option value="" selected>Todas</option>
-                            <option
-                                value={year}
-                                onChange={e => setYear(e.target.value)}
-                            >
-                                {year}
-                            </option>
-                        </select>
-
-                    Faixa de Preço:
-                    <select>
-                            <option value="" selected>Todos</option>
-                            <option
-                                value={price}
-                                onChange={e => setPrice(e.target.value)}
-                            >
-                                R${price[0]} - R${price[1]}
-                            </option>
-                        </select>
-
-                    Versão:
-                    <select>
-                            <option value="" selected>Todas</option>
-                            <option
-                                value={versionID}
-                                onChange={e => setVersionID(e.target.value)}
-                            >
-                                {versionID}
-                            </option>
+                            {versions.map(version => (
+                                <option key={version.ID}
+                                    value={version.ID}
+                                >
+                                    {version.Name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
-                    <button type="submit">Ver ofertas</button>
+                    <div className="input-row">
+                        <span>Ano Desejado:</span>
+                        <select onChange={
+                            e => {
+                                setYear(e.target.value)
+                                // getYear(e.target.value)
+                            }
+                        }>
+                            <option value={0} selected>Todos</option>
+                            {years.map(year => (
+                                <option value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-row">
+                        <span>Faixa de Preço:</span>
+                        <select onChange={
+                            e => {
+                                setPrice(e.target.value)
+                                getPrice(e.target.value)
+                            }}>
+                            <option value={0} selected>Todos</option>
+                            {prices.map(price => (
+                                <option key={price}
+                                    value={price}
+                                >
+                                    Até R$ {price}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </form>
+
+                <form className="desktop">
+                    <div className="input-row one-hundred">
+                        <input
+                            type="checkbox"
+                            name="newCar"
+                            value={newCar}
+                            onChange={e => setNewCar(e.target.checked)}
+                            id="newCar"
+                        />
+                        <label for="newCar" data-state={newCar}><span></span>Novos</label>
+
+                        <input
+                            type="checkbox"
+                            name="usedCar"
+                            value={usedCar}
+                            onChange={e => setUsedCar(e.target.checked)}
+                            id="usedCar"
+                        />
+                        <label for="usedCar" data-state={usedCar}><span></span> Usados</label>
+                    </div>
+
+                    <div className="input-row">
+                        <span>Onde:</span>
+                        <input
+                            type="text"
+                            value="São Paulo - SP"
+                        />
+
+                        <span>Raio:</span>
+                        <select>
+                            <option value="" selected disabled>Km</option>
+                            <option value="">100Km</option>
+                        </select>
+                    </div>
+
+                    <div className="input-row">
+                        <span>Marca:</span>
+                        <select onChange={
+                            e => {
+                                setMakeID(e.target.value)
+                                getModels(e.target.value)
+                            }
+                        }>
+                            <option value="" selected>Todas</option>
+                            {makes.map(make => (
+                                <option key={make.ID}
+                                    value={make.ID}
+                                >
+                                    {make.Name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <span>Modelo:</span>
+                        <select onChange={
+                            e => {
+                                setModelID(e.target.value)
+                                getVersions(e.target.value)
+                            }
+                        }>
+                            <option value="" selected>Todos</option>
+                            {models.map(model => (
+                                <option key={model.ID}
+                                    value={model.ID}
+                                >
+                                    {model.Name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-row">
+                        <span>Versão:</span>
+                        <select>
+                            <option value="" selected>Todas</option>
+                            {versions.map(version => (
+                                <option key={version.ID}
+                                    value={version.ID}
+                                >
+                                    {version.Name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-row">
+                        <span>Ano Desejado:</span>
+                        <select onChange={
+                            e => {
+                                setYear(e.target.value)
+                                // getYear(e.target.value)
+                            }
+                        }>
+                            <option value={0} selected>Todos</option>
+                            {years.map(year => (
+                                <option value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+
+                        <span>Faixa de Preço:</span>
+                        <select onChange={
+                            e => {
+                                setPrice(e.target.value)
+                                getPrice(e.target.value)
+                            }}>
+                            <option value={0} selected>Todos</option>
+                            {prices.map(price => (
+                                <option key={price}
+                                    value={price}
+                                >
+                                    Até R$ {price}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* <button type="submit">Ver ofertas</button> */}
                 </form>
             </div>
 
@@ -244,6 +432,16 @@ export default function Box () {
                             &&
                             (!newCar && usedCar ? vehicle.KM !== 0 : vehicle.KM === 0)
                         ))
+                        // &&
+                        // filtro por marca
+                        // &&
+                        // filtro por modelo
+                        &&
+                        (parseInt(year) === 0 ? vehicle.YearModel !== 0 : vehicle.YearModel === parseInt(year))
+                        &&
+                        (parseInt(price) === 0 ? vehicle.Price !== 0 : vehicle.Price <= price)
+                        // &&
+                        // filtro por versão
                         &&
                         (
                             <div className="item" key={vehicle.ID}>

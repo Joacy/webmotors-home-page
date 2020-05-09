@@ -2,14 +2,15 @@
     display: flex;
     flex-direction: column;
     max-width: 933px;
-    height: 312px;
+    height: auto;
+    max-height: 312px;
     margin: 0 auto;
     padding: 15px;
 }
 
 .container-box .logo {
     width: 200px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .container-box .logo img {
@@ -18,30 +19,35 @@
     object-fit: contain;
 }
 
-.container-box form {
+.container-box form.desktop {
     background: #fff;
     padding: 15px;
     border-radius: 4px;
     box-shadow: 0px 3px 10px #ccc;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
-.container-box form input,
-.container-box form select option {
+.container-box form.desktop input,
+.container-box form.desktop select option {
     color: #222;
 }
 
-.container-box form input[type="checkbox"] {
+.container-box form.desktop input[type="checkbox"] {
     display: none;
 }
 
-.container-box form label {
+.container-box form.desktop label {
     display: flex;
     align-items: center;
     cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
     margin-right: 25px;
 }
 
-.container-box form label span {
+.container-box form.desktop label span {
     width: 14px;
     height: 14px;
     background: transparent;
@@ -50,8 +56,43 @@
     margin-right: 5px;
 }
 
-.container-box form label[data-state="true"] span {
+.container-box form.desktop label[data-state="true"] span {
     background: #ec0928;
+}
+
+.input-row {
+    display: flex;
+    width: 50%;
+    padding: 5px 0;
+    box-sizing: border-box;
+}
+
+.input-row span {
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.input-row input,
+.input-row select {
+    border: 1px solid #ec0928dd;
+    padding: 0 5px;
+    border-radius: 4px;
+    width: auto;
+    max-width: 80%;
+}
+
+.input-row span + input {
+    margin-right: 15px;
+}
+
+.input-row span + select {
+    margin-right: 15px;
+}
+
+.input-row.one-hundred {
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .container-galery {
@@ -117,9 +158,100 @@
     color: #fff;
 }
 
+@media screen and (min-width: 768px) {
+    .container-box form.mobile {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 767px) {
+    .container-box form.desktop {
+        display: none;
+    }
+
+    .container-box {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .container-box .logo {
+        width: 200px;
+        margin-bottom: 5px;
+    }
+
+    .container-box form.mobile {
+        background: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0px 3px 10px #ccc;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .container-box form.mobile input,
+    .container-box form.mobile select option {
+        color: #222;
+    }
+
+    .container-box form.mobile input[type="checkbox"] {
+        display: none;
+    }
+
+    .container-box form.mobile label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 25px;
+    }
+
+    .container-box form.mobile label span {
+        width: 14px;
+        height: 14px;
+        background: transparent;
+        border-radius: 50%;
+        border: 1px solid #222;
+        margin-right: 5px;
+    }
+
+    .container-box form.mobile label[data-state="true"] span {
+        background: #ec0928;
+    }
+
     .container-galery .cars-galery {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .input-row {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 5px 0;
+        box-sizing: border-box;
+    }
+
+    .input-row span {
+        font-size: 13px;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    .input-row input,
+    .input-row select {
+        border: 1px solid #ec0928dd;
+        padding: 0 5px;
+        border-radius: 4px;
+        width: 50%;
+    }
+
+    .input-row span + input {
+        margin-right: 0;
+    }
+
+    .input-row span + select {
+        margin-right: 0;
     }
 }
 
