@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import api from '../../services/api';
 
@@ -16,17 +16,17 @@ export default function Box () {
     const [models, setModels] = useState([]);
     const [versions, setVersions] = useState([]);
 
-    const [makeID, setMakeID] = useState(0);
+    const [makeID, setMakeID] = useState();
     const [makeName, setMakeName] = useState('');
 
-    const [modelID, setModelID] = useState(1);
+    const [modelID, setModelID] = useState();
     const [modelName, setModelName] = useState('');
 
-    const [vehicleID, setVehicleID] = useState(1);
+    const [vehicleID, setVehicleID] = useState();
 
     const [versionName, setVersionName] = useState('');
 
-    const [year, setYear] = useState(0);
+    const [year, setYear] = useState();
     const [years, setYears] = useState([
         2000,
         2001,
@@ -144,10 +144,15 @@ export default function Box () {
         getVehicles();
         setYear(0);
         setPrice(0);
-        setMakeName('todos');
-        setModelName('todos');
+        setMakeName('Todas');
+        setModelName('Todos');
         setVersionName('todos');
     }
+
+    useEffect(() => {
+        console.log('Marca ' + makeName);
+        console.log('Modelo ' + modelName);
+    }, [makeName, modelName])
 
     return (
         <>
@@ -199,6 +204,7 @@ export default function Box () {
                             e => {
                                 setMakeID(e.target.value)
                                 getModels(e.target.value)
+                                setModelName('Todos')
                                 setMakeName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
@@ -328,6 +334,7 @@ export default function Box () {
                             e => {
                                 setMakeID(e.target.value)
                                 getModels(e.target.value)
+                                setModelName('Todos')
                                 setMakeName(e.target.options[e.target.selectedIndex].text)
                             }
                         }>
@@ -423,9 +430,9 @@ export default function Box () {
                             (!newCar && usedCar ? vehicle.KM !== 0 : vehicle.KM === 0)
                         ))
                         &&
-                        (makeName === 'todos' ? vehicle.Make !== 'todos' : vehicle.Make === makeName)
+                        (makeName === 'Todas' ? vehicle.Make !== 'Todas' : vehicle.Make === makeName)
                         &&
-                        (modelName === 'todos' ? vehicle.Model !== 'todos' : vehicle.Model === modelName)
+                        (modelName === 'Todos' ? vehicle.Model !== 'Todos' : vehicle.Model === modelName)
                         &&
                         (parseInt(year) === 0 ? vehicle.YearModel !== 0 : vehicle.YearModel === parseInt(year))
                         &&
